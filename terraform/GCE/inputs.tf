@@ -24,7 +24,7 @@ variable "instance_name" {
 variable "machine_type" {
   description = "Machine type for the GCE instance"
   type        = string
-  default     = "e2-medium"
+  default     = "e2-micro"
 }
 
 variable "boot_image" {
