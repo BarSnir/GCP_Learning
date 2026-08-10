@@ -43,3 +43,18 @@ resource "google_compute_instance" "vm" {
     managed_by  = "terraform"
   }
 }
+
+resource "google_compute_firewall" "rules" {
+  project     = var.project_id
+  name        = "my-firewall-rule"
+  network     = var.network
+  description = "Creates firewall rule targeting tagged instances"
+
+  allow {
+    protocol  = "tcp"
+    ports     = ["80", "8080", "1000-2000"]
+  }
+
+  source_tags = ["foo"]
+  target_tags = ["web"]
+}
