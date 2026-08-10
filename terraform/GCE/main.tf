@@ -30,7 +30,7 @@ resource "google_compute_instance" "vm" {
     network = var.network
 
     access_config {
-      # Public IP
+      nat_ip = google_compute_address.static_ip.address
     }
   }
 
@@ -54,7 +54,11 @@ resource "google_compute_firewall" "rules" {
     protocol  = "tcp"
     ports     = ["80", "8080", "1000-2000"]
   }
-
   source_tags = ["foo"]
   target_tags = ["web"]
+}
+
+resource "google_compute_address" "static_ip" {
+  name   = "my-static-ip"
+  region = var.region
 }
