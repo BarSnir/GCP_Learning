@@ -30,7 +30,7 @@ resource "google_compute_instance" "vm" {
     network = var.network
 
     access_config {
-      nat_ip = google_compute_address.static_ip.address
+      # Public IP
     }
   }
 
@@ -49,7 +49,6 @@ resource "google_compute_firewall" "rules" {
   name        = "my-firewall-rule"
   network     = var.network
   description = "Creates firewall rule targeting tagged instances"
-
   allow {
     protocol  = "tcp"
     ports     = ["80", "8080", "1000-2000"]
