@@ -57,7 +57,7 @@ resource "google_compute_instance" "payment_vm" {
     on_host_maintenance = "MIGRATE"
     automatic_restart   = true
     node_affinities {
-      key      = "node_group"
+      key      = "compute.googleapis.com/node-group-payment"
       operator = "IN"
       values   = [google_compute_node_group.payment_node_group.name]
     }
