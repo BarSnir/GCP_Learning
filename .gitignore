@@ -32,3 +32,6 @@ crash.*.log
 *terraform.tfvars.example
 
 *-exmple
+
+cert.pem
+key.pem
