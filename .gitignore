@@ -55,12 +55,16 @@ service_account*.json
 /terraform/App-Engine/**/*.zip
 /terraform/App-Engine/4-Go-AutoScaling-Standard/app
 /terraform/App-Engine/4-Go-AutoScaling-Standard/build/
+/terraform/App-Engine/**/target/
 
 # Terraform saved plans without an extension (contain embedded state)
 /terraform/App-Engine/1-Setup/setup
 /terraform/App-Engine/1-Setup/simple_sa
 /terraform/App-Engine/3-js-hellow-world/js-hw
 /terraform/App-Engine/4-Go-AutoScaling-Standard/go-hw-standard-autscale
+/terraform/App-Engine/5-java-standard/java-api
+/terraform/App-Engine/5-java-standard/java-api-versions
+/terraform/App-Engine/6-final-python/multi-services
 /terraform/GCE/custom-image/custom-image
 /terraform/GCE/custom-machine-type/cmt
 /terraform/GCE/instance-templates/instance-template

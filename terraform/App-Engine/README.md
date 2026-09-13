@@ -45,3 +45,14 @@ terraform import google_app_engine_application.app pca-certification
    ```hcl
    service                   = "go-standard"
    delete_service_on_destroy = true
+
+
+## Spliting - 4-Java API
+gcloud app services set-traffic java-api \
+  --splits=v1=0.9,v2=0.1 \
+  --split-by=random
+
+## Migrating 4-Java API
+gcloud app services set-traffic java-api \
+  --splits=v2=1 \
+  --migrate
