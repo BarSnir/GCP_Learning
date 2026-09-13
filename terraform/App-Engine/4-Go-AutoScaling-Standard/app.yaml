@@ -1,0 +1,11 @@
+runtime: go127
+
+service: go-standard
+
+instance_class: F1
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 5
+  target_cpu_utilization: 0.60
+  max_concurrent_requests: 20

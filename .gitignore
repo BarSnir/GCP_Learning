@@ -35,3 +35,56 @@ crash.*.log
 
 cert.pem
 key.pem
+.venv
+node_modules
+
+# Local secrets and cloud credentials
+.env
+.env.*
+!.env.example
+!.env.sample
+*.key
+*.p12
+*.pfx
+application_default_credentials.json
+credentials.json
+service-account*.json
+service_account*.json
+
+# Generated App Engine bundles and executables
+/terraform/App-Engine/**/*.zip
+/terraform/App-Engine/4-Go-AutoScaling-Standard/app
+/terraform/App-Engine/4-Go-AutoScaling-Standard/build/
+
+# Terraform saved plans without an extension (contain embedded state)
+/terraform/App-Engine/1-Setup/setup
+/terraform/App-Engine/1-Setup/simple_sa
+/terraform/App-Engine/3-js-hellow-world/js-hw
+/terraform/App-Engine/4-Go-AutoScaling-Standard/go-hw-standard-autscale
+/terraform/GCE/custom-image/custom-image
+/terraform/GCE/custom-machine-type/cmt
+/terraform/GCE/instance-templates/instance-template
+/terraform/GCE/live-migration/lm
+/terraform/GCE/multi-regional-image/mrci
+/terraform/GCE/observabillity/obs
+/terraform/GCE/sole-tenant/st
+/terraform/GCE/spots/spots
+/terraform/LB/ext-regional-ALB/ext-global-alb
+/terraform/LB/ext-regional-ALB/ext-regional-alb
+/terraform/LB/global-app-LB-HA-autoscaling/gaLBHA-autoscale
+/terraform/LB/global-ext-ALB/ext-global-alb
+/terraform/LB/global-ext-tsl-termination-ALB/global-ext-tls-alb
+/terraform/LB/int-regional-ALB/int-regional-ALB
+/terraform/LB/layer4-NLB/layer4-nlb
+/terraform/LB/layer4-forward-LB/layer4-lb
+/terraform/LB/layer7-ALB/layer7-alb
+/terraform/LB/weighted-ALB/weighted-ALB
+/terraform/MIG/auto-scale/mig-auto-scale
+/terraform/MIG/basic/mig-basic
+/terraform/MIG/canary/canary
+/terraform/MIG/health-check/mig-health-check
+/terraform/MIG/regional/mig-regional
+/terraform/MIG/rolling-restart-replace/mig-rolling-update
+/terraform/MIG/rolling-restart-replace/rolling-restart
+/terraform/MIG/rolling-update/mig-rolling-update
+/terraform/MIG/scale-control/scale-control
