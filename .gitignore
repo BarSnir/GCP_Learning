@@ -58,6 +58,7 @@ service_account*.json
 /terraform/App-Engine/**/target/
 
 # Terraform saved plans without an extension (contain embedded state)
+/terraform/Cloud-Run/0-Setup/setup
 /terraform/App-Engine/1-Setup/setup
 /terraform/App-Engine/1-Setup/simple_sa
 /terraform/App-Engine/3-js-hellow-world/js-hw
