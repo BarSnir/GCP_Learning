@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gke-ex0-web
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: gke-ex0-web
+
+  template:
+    metadata:
+      labels:
+        app: gke-ex0-web
+
+    spec:
+      containers:
+        - name: web
+          image: europe-west1-docker.pkg.dev/pca-certifciation/gke-ex0/web:v1
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "32Mi"
+
+            limits:
+              cpu: "100m"
+              memory: "64Mi"

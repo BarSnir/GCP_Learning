@@ -1,0 +1,9 @@
+- Standard gives direct control over node pools and machine types.
+- Autopilot manages the worker infrastructure for you.
+- Standard clusters can be zonal or regional.
+- Autopilot clusters are regional.
+- Standard preserved our exact Pod resource requests.
+- Autopilot adjusted requests that were below its accepted values.
+- Autopilot still runs Kubernetes nodes, but Google manages their lifecycle.
+- Standard is better when explicit infrastructure control is required.
+- Autopilot is useful when you want to focus primarily on workload requirements.

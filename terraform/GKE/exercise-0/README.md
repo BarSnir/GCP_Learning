@@ -1,0 +1,11 @@
+- A GKE Standard cluster separates the control plane from worker node pools.
+- Zonal GKE is appropriate for a low-cost learning environment.
+- VPC-native GKE uses separate IP ranges for nodes, Pods, and Services.
+- kubectl connects to the Kubernetes API endpoint, not directly to worker nodes.
+- gcloud get-credentials configures kubeconfig; gke-gcloud-auth-plugin handles authentication.
+- Node service accounts should use least-privilege IAM.
+- Artifact Registry stores container images that GKE nodes can pull.
+- ClusterIP exposes an application only inside Kubernetes.
+- kubectl port-forward provides temporary local access without creating a Load Balancer.
+- Node pools should be managed independently from the GKE control plane.
+- A Standard node pool can be scaled to zero when the lab is idle to reduce cost.
