@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-access
+  namespace: wif-demo
+
+spec:
+  serviceAccountName: default
+  containers:
+    - name: gcloud
+      image: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+      command:
+        - /bin/sh
+        - -c
+        - sleep infinity

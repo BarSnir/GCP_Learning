@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hpa-demo
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: hpa-demo
+
+  template:
+    metadata:
+      labels:
+        app: hpa-demo
+
+    spec:
+      nodeSelector:
+        pool: apps
+
+      tolerations:
+        - key: dedicated
+          operator: Equal
+          value: apps
+          effect: NoSchedule
+
+      containers:
+        - name: hpa-demo
+          image: registry.k8s.io/hpa-example:latest
+
+          ports:
+            - containerPort: 80
+
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "64Mi"
+
+            limits:
+              cpu: "1000m"
+              memory: "128Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hpa-demo
+spec:
+  type: ClusterIP
+
+  selector:
+    app: hpa-demo
+
+  ports:
+    - port: 80
+      targetPort: 80

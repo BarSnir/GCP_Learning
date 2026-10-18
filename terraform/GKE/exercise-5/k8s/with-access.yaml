@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-access
+  namespace: wif-demo
+
+spec:
+  serviceAccountName: gcs-reader
+
+  containers:
+    - name: gcloud
+      image: gcr.io/google.com/cloudsdktool/google-cloud-cli:slim
+
+      command:
+        - /bin/sh
+        - -c
+        - sleep infinity
