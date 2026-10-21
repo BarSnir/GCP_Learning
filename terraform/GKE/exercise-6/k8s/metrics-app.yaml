@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-demo
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: metrics-demo
+
+  template:
+    metadata:
+      labels:
+        app: metrics-demo
+
+    spec:
+      containers:
+        - name: exporter
+          image: us-docker.pkg.dev/google-samples/containers/gke/prometheus-dummy-exporter:v0.2.0
+
+          command:
+            - ./prometheus-dummy-exporter
+
+          args:
+            - --metric-name=gke_ex6_requests_total
+            - --metric-value=42
+            - --port=8080
+
+          ports:
+            - name: metrics
+              containerPort: 8080
+
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "32Mi"
+
+            limits:
+              cpu: "50m"
+              memory: "64Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-demo
+
+spec:
+  type: ClusterIP
+
+  selector:
+    app: metrics-demo
+
+  ports:
+    - name: metrics
+      port: 8080
+      targetPort: metrics

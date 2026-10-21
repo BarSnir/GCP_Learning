@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: log-demo
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: log-demo
+
+  template:
+    metadata:
+      labels:
+        app: log-demo
+
+    spec:
+      containers:
+        - name: logger
+          image: busybox:1.37
+
+          command:
+            - /bin/sh
+            - -c
+            - |
+              i=0
+
+              while true; do
+                i=$((i + 1))
+
+                echo '{"severity":"INFO","service":"gke-observability-demo","message":"Application is healthy","environment":"lab"}'
+
+                if [ $((i % 3)) -eq 0 ]; then
+                  echo '{"severity":"ERROR","service":"gke-observability-demo","message":"Synthetic application error","environment":"lab"}'
+                fi
+
+                sleep 10
+              done
+
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+
+            limits:
+              cpu: "20m"
+              memory: "32Mi"

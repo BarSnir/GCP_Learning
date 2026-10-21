@@ -1,0 +1,14 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: metrics-demo
+
+spec:
+  selector:
+    matchLabels:
+      app: metrics-demo
+
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: 30s
