@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: team-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-a
+  template:
+    metadata:
+      labels:
+        app: team-a
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p /usr/share/nginx/html/team-a
+              echo '<h1>Team A</h1>' > /usr/share/nginx/html/index.html
+              echo '<h1>Team A via Gateway</h1>' > /usr/share/nginx/html/team-a/index.html
+              nginx -g 'daemon off;'
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "30m"
+              memory: "32Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: team-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: team-b
+  template:
+    metadata:
+      labels:
+        app: team-b
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          command:
+            - /bin/sh
+            - -c
+            - |
+              mkdir -p /usr/share/nginx/html/team-b
+              echo '<h1>Team B</h1>' > /usr/share/nginx/html/index.html
+              echo '<h1>Team B via Gateway</h1>' > /usr/share/nginx/html/team-b/index.html
+              nginx -g 'daemon off;'
+          resources:
+            requests:
+              cpu: "10m"
+              memory: "16Mi"
+            limits:
+              cpu: "30m"
+              memory: "32Mi"
