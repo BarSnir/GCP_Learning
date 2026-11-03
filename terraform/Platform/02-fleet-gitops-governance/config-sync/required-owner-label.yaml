@@ -1,0 +1,16 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: deployments-must-have-owner
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+      - apiGroups:
+          - apps
+        kinds:
+          - Deployment
+  parameters:
+    message: "Every Deployment must have an owner label."
+    labels:
+      - key: owner
