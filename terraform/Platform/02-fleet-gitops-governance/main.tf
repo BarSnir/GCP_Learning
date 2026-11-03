@@ -15,10 +15,6 @@ provider "google" {
   zone    = var.zone
 }
 
-# ---------------------------------------------------------
-# APIs
-# ---------------------------------------------------------
-
 locals {
   required_apis = toset([
     "compute.googleapis.com",
@@ -37,10 +33,6 @@ resource "google_project_service" "apis" {
   disable_on_destroy = false
 }
 
-# ---------------------------------------------------------
-# Network
-# ---------------------------------------------------------
-
 resource "google_compute_network" "gitops" {
   name                    = var.network_name
   auto_create_subnetworks = false
@@ -56,10 +48,6 @@ resource "google_compute_subnetwork" "gitops" {
   network       = google_compute_network.gitops.id
   ip_cidr_range = var.subnet_cidr
 }
-
-# ---------------------------------------------------------
-# GKE
-# ---------------------------------------------------------
 
 resource "google_container_cluster" "gitops" {
   name     = var.cluster_name
@@ -103,75 +91,6 @@ resource "google_container_cluster" "gitops" {
   ]
 }
 
-# ---------------------------------------------------------
-# Config Sync Fleet Default
-# ---------------------------------------------------------
-
-resource "google_gke_hub_feature" "configmanagement" {
-  name     = "configmanagement"
-  location = "global"
-  project  = var.project_id
-
-  fleet_default_member_config {
-    configmanagement {
-      management = "MANAGEMENT_AUTOMATIC"
-
-      config_sync {
-        enabled       = true
-        source_format = "unstructured"
-
-        git {
-          sync_repo   = var.git_repo
-          sync_branch = var.git_branch
-          policy_dir  = var.policy_dir
-          secret_type = "none"
-        }
-      }
-    }
-  }
-
-  depends_on = [
-    google_project_service.apis
-  ]
-}
-
-# ---------------------------------------------------------
-# Policy Controller Fleet Default
-# ---------------------------------------------------------
-
-resource "google_gke_hub_feature" "policycontroller" {
-  name     = "policycontroller"
-  location = "global"
-  project  = var.project_id
-
-  fleet_default_member_config {
-    policycontroller {
-      policy_controller_hub_config {
-        install_spec           = "INSTALL_SPEC_ENABLED"
-        audit_interval_seconds = 60
-        log_denies_enabled     = true
-        mutation_enabled       = false
-
-        policy_content {
-          template_library {
-            installation = "ALL"
-          }
-        }
-      }
-    }
-  }
-
-  depends_on = [
-    google_project_service.apis
-  ]
-}
-
-# ---------------------------------------------------------
-# Fleet Membership
-#
-# Fleet defaults exist before the cluster joins the Fleet.
-# ---------------------------------------------------------
-
 resource "google_gke_hub_membership" "gitops" {
   membership_id = var.membership_name
   project       = var.project_id
@@ -189,8 +108,71 @@ resource "google_gke_hub_membership" "gitops" {
   }
 
   depends_on = [
-    google_container_cluster.gitops,
-    google_gke_hub_feature.configmanagement,
-    google_gke_hub_feature.policycontroller
+    google_container_cluster.gitops
   ]
+}
+
+resource "google_gke_hub_feature" "configmanagement" {
+  name     = "configmanagement"
+  location = "global"
+  project  = var.project_id
+
+  depends_on = [
+    google_project_service.apis
+  ]
+}
+
+resource "google_gke_hub_feature_membership" "configmanagement" {
+  project             = var.project_id
+  location            = "global"
+  feature             = google_gke_hub_feature.configmanagement.name
+  membership          = google_gke_hub_membership.gitops.membership_id
+  membership_location = var.region
+
+  configmanagement {
+    config_sync {
+      enabled       = true
+      source_format = "unstructured"
+
+      git {
+        sync_repo   = var.git_repo
+        sync_branch = var.git_branch
+        policy_dir  = var.policy_dir
+        secret_type = "none"
+      }
+    }
+  }
+}
+
+resource "google_gke_hub_feature" "policycontroller" {
+  name     = "policycontroller"
+  location = "global"
+  project  = var.project_id
+
+  depends_on = [
+    google_project_service.apis
+  ]
+}
+
+resource "google_gke_hub_feature_membership" "policycontroller" {
+  project             = var.project_id
+  location            = "global"
+  feature             = google_gke_hub_feature.policycontroller.name
+  membership          = google_gke_hub_membership.gitops.membership_id
+  membership_location = var.region
+
+  policycontroller {
+    policy_controller_hub_config {
+      install_spec           = "INSTALL_SPEC_ENABLED"
+      audit_interval_seconds = 60
+      log_denies_enabled     = true
+      mutation_enabled       = false
+
+      policy_content {
+        template_library {
+          installation = "ALL"
+        }
+      }
+    }
+  }
 }

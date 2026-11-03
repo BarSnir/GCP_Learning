@@ -49,7 +49,7 @@ variable "membership_name" {
 variable "machine_type" {
   description = "GKE node machine type"
   type        = string
-  default     = "e2-small"
+  default     = "e2-standard-2"
 }
 
 variable "git_repo" {

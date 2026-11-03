@@ -20,13 +20,36 @@ gcloud container fleet memberships list \
 echo
 echo "===== WAITING FOR CONFIG SYNC ====="
 
+READY=0
+
 for i in $(seq 1 30); do
+  echo "Attempt $i/30..."
+
   if kubectl get namespace gitops-demo >/dev/null 2>&1; then
+    READY=1
     break
   fi
 
   sleep 10
 done
+
+if [ "$READY" -ne 1 ]; then
+  echo
+  echo "Config Sync did not reconcile within the expected time."
+  echo
+  echo "===== CONFIG MANAGEMENT STATUS ====="
+
+  gcloud beta container fleet config-management status \
+    --project="$PROJECT" || true
+
+  echo
+  echo "===== CONFIG SYNC PODS ====="
+
+  kubectl get pods \
+    --namespace=config-management-system || true
+
+  exit 1
+fi
 
 echo
 echo "===== CONFIG SYNC RESULT ====="

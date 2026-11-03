@@ -6,4 +6,4 @@ metadata:
 data:
   managed-by: "config-sync"
   environment: "training"
-  version: "v1"
+  version: "v2"
