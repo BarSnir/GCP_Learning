@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: echo-only-caller
+  namespace: mesh-demo
+spec:
+  selector:
+    matchLabels:
+      app: echo
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals:
+              - "pca-certifciation.svc.id.goog/ns/mesh-demo/sa/caller-sa"

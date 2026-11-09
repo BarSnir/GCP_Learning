@@ -1,0 +1,23 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: echo
+  namespace: mesh-demo
+spec:
+  hosts:
+    - echo
+  http:
+    - fault:
+        abort:
+          percentage:
+            value: 20
+          httpStatus: 503
+      route:
+        - destination:
+            host: echo
+            subset: v1
+          weight: 50
+        - destination:
+            host: echo
+            subset: v2
+          weight: 50
